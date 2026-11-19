@@ -1,0 +1,20 @@
+# Test-only copy of the three league config the board ran on before it became ESPN only.
+# Tests that need Sleeper leagues point the config loader here (see tests/conftest.py).
+season: 2026
+espnTeamId: 14
+leagues:
+  - key: fantasizing
+    platform: espn
+    id: 125685129
+    name: Fantasizing 2026
+    playoffWeeks: [15, 16, 17]
+    shotguns: true
+  - key: hwh
+    platform: sleeper
+    id: "1389389185361653760"
+    name: "HWH: The League"
+  - key: chicago-dynasty
+    platform: sleeper
+    id: "1335703355086893056"
+    name: Chicago Dynasty
+    dynasty: true

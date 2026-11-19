@@ -1,0 +1,103 @@
+{
+ "espnRosters": {
+  "ageDays": 0.0,
+  "fromCache": false,
+  "stale": false,
+  "staleAfterDays": 4,
+  "state": "fresh",
+  "syncedAt": "2026-11-19T22:27:53.000Z",
+  "week": 11,
+  "weekMismatch": false
+ },
+ "gapFills": 0,
+ "generatedAt": "2026-11-19T22:27:57Z",
+ "idmap": {
+  "matched": 1040,
+  "unmatchedEspnPlayers": 21
+ },
+ "leagues": [
+  {
+   "file": "fantasizing.json",
+   "gain": 0.0,
+   "key": "fantasizing",
+   "name": "Fantasizing 2026"
+  }
+ ],
+ "model": "Equal average of ESPN and Rotowire projections, each re-scored with the league's scoring. Floor and ceiling are one weekly SD below and above.",
+ "nextRefresh": "2026-11-20T23:07:00Z",
+ "season": 2026,
+ "skippedLeagues": [],
+ "sources": {
+  "espn_defaults": {
+   "error": null,
+   "lastUpdated": "2026-11-19T22:27:52Z",
+   "ok": true,
+   "stale": false,
+   "state": "fresh"
+  },
+  "espn_league": {
+   "error": null,
+   "lastUpdated": "2026-11-19T22:27:53Z",
+   "ok": true,
+   "stale": false,
+   "state": "fresh"
+  },
+  "espn_lineups_w10": {
+   "error": null,
+   "lastUpdated": "2026-11-19T22:27:53Z",
+   "ok": true,
+   "stale": false,
+   "state": "fresh"
+  },
+  "espn_rosters": {
+   "error": null,
+   "lastUpdated": "2026-11-19T22:27:53.000Z",
+   "ok": true,
+   "stale": false,
+   "state": "fresh"
+  },
+  "nflverse_lines": {
+   "error": null,
+   "lastUpdated": "2026-11-19T22:27:53Z",
+   "ok": true,
+   "stale": false,
+   "state": "fresh"
+  },
+  "nflverse_schedule": {
+   "error": null,
+   "lastUpdated": "2026-11-19T22:27:53Z",
+   "ok": true,
+   "stale": false,
+   "state": "fresh"
+  },
+  "sleeper_leagues": {
+   "error": null,
+   "lastUpdated": "2026-11-19T22:27:50Z",
+   "ok": true,
+   "stale": false,
+   "state": "fresh"
+  },
+  "sleeper_players": {
+   "error": null,
+   "lastUpdated": "2026-11-19T22:27:50Z",
+   "ok": true,
+   "stale": false,
+   "state": "fresh"
+  },
+  "sleeper_projections": {
+   "error": null,
+   "lastUpdated": "2026-11-19T22:27:51Z",
+   "ok": true,
+   "stale": false,
+   "state": "fresh"
+  },
+  "sleeper_stats_w10": {
+   "error": null,
+   "lastUpdated": "2026-11-19T22:27:51Z",
+   "ok": true,
+   "stale": false,
+   "state": "fresh"
+  }
+ },
+ "week": 11
+}

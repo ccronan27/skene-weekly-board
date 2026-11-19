@@ -1,0 +1,12 @@
+# League IDs. Season rollover = update these IDs only (see README preseason checklist).
+# Scoring and roster settings are pulled from each platform on every run.
+# Anything the APIs miss goes in config/leagues/<key>.overrides.yaml.
+season: 2026
+espnTeamId: 1                          # your team in the ESPN league (Exempt List)
+leagues:
+  - key: fantasizing
+    platform: espn
+    id: 125685129
+    name: Fantasizing 2026
+    playoffWeeks: [15, 16, 17]   # confirmed 11/18/26. The public league settings also give 15 to 17 (8 teams, one week a round)
+    shotguns: true               # house rule for this ESPN league only: a starter, K or D/ST at 0 or less owes a shotgun. Adds the Shotguns view

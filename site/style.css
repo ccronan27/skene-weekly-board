@@ -1,0 +1,267 @@
+:root{--bg:#f6f7f9;--card:#fff;--text:#161a20;--muted:#5d6673;--line:#dde1e7;--accent:#1f5fd6;--good:#17803d;--goodbg:#e4f5ea;--bad:#b3261e;--badbg:#fdeceb;--warn:#8a5a00;--warnbg:#fff3d6;
+--pos-qb-bg:#e6e0f6;--pos-qb-fg:#3b2977;
+--pos-rb-bg:#dcf0e3;--pos-rb-fg:#1c5c35;
+--pos-wr-bg:#dce8f9;--pos-wr-fg:#1b4b8c;
+--pos-te-bg:#fce5cf;--pos-te-fg:#7a3c0b;
+--pos-flex-bg:#d4eeee;--pos-flex-fg:#155a5a;
+--pos-k-bg:#f4dfeb;--pos-k-fg:#7b2551;
+--pos-def-bg:#e3e6eb;--pos-def-fg:#333b46}
+@media (prefers-color-scheme:dark){:root{--bg:#0f1318;--card:#171c23;--text:#e8ebef;--muted:#9aa4b2;--line:#2a323d;--accent:#6ea0ff;--good:#5fd18a;--goodbg:#14301f;--bad:#ff8a80;--badbg:#3a1a18;--warn:#f2c35b;--warnbg:#3a2e12;
+--pos-qb-bg:#3a2f5e;--pos-qb-fg:#dccfff;
+--pos-rb-bg:#1f3d2b;--pos-rb-fg:#a6e6bf;
+--pos-wr-bg:#1e3556;--pos-wr-fg:#b3d0ff;
+--pos-te-bg:#4a3118;--pos-te-fg:#ffd7a6;
+--pos-flex-bg:#173e3e;--pos-flex-fg:#a4e9e9;
+--pos-k-bg:#4a2339;--pos-k-fg:#ffc0de;
+--pos-def-bg:#2e353f;--pos-def-fg:#d5dce6}}
+*{box-sizing:border-box}
+body{margin:0;background:var(--bg);color:var(--text);font:16px/1.4 system-ui,-apple-system,Segoe UI,Roboto,sans-serif}
+.top,main,.foot{max-width:760px;margin:0 auto;padding:0 16px}
+.top{padding-top:16px}
+.top p{margin:4px 0 0}
+h1{font-size:1.4rem;margin:0}
+h2{font-size:1.1rem;margin:20px 0 8px}
+.muted{color:var(--muted);font-size:.875rem}
+
+/* League tabs: one segmented control that fits 360px wide */
+.tabs{display:flex;gap:4px;width:100%;max-width:728px;margin:0 auto;padding:4px;border:1px solid var(--line);border-radius:12px;background:var(--bg)}
+.tab{flex:1 1 0;min-width:0;border:1px solid transparent;background:transparent;color:var(--text);border-radius:9px;padding:6px 4px;font:inherit;font-size:.85rem;line-height:1.2;cursor:pointer;display:flex;flex-direction:column;align-items:center;gap:2px;text-align:center;overflow-wrap:anywhere}
+.tab[aria-selected=true]{background:var(--card);border-color:var(--line);font-weight:600;box-shadow:0 1px 2px rgba(0,0,0,.12)}
+.tab:focus-visible{outline:2px solid var(--accent);outline-offset:1px}
+.tname{display:block}
+
+.card{background:var(--card);border:1px solid var(--line);border-radius:12px;padding:12px;margin:8px 0}
+.card.list{padding:0 12px}
+.summary{display:flex;flex-wrap:wrap;gap:12px 24px}
+.summary b{display:block;font-size:1.3rem}
+.label{font-size:.7rem;text-transform:uppercase;letter-spacing:.04em;color:var(--muted)}
+.alert{background:var(--badbg);color:var(--bad);border-radius:8px;padding:8px 12px;margin:8px 0;font-weight:600}
+.warn{background:var(--warnbg);color:var(--warn);border-radius:8px;padding:8px 12px;margin:8px 0}
+.error{background:var(--badbg);color:var(--bad);border-radius:8px;padding:12px;margin:16px}
+.retry{margin-left:8px;border:1px solid currentColor;background:transparent;color:inherit;border-radius:7px;padding:3px 10px;font:inherit;font-size:.85rem;cursor:pointer}
+.retry:focus-visible{outline:2px solid var(--accent);outline-offset:1px}
+.move{margin:6px 0}
+.sources{width:100%;border-collapse:collapse;font-size:.85rem}
+.sources td{padding:6px 0;border-top:1px solid var(--line)}
+.sources td:last-child{text-align:right}
+.stale{color:var(--bad);font-weight:700}
+
+/* Compact player rows */
+.slot{padding:8px 0;border-top:1px solid var(--line)}
+.slot:first-child{border-top:0}
+.slot.changed{padding-bottom:10px}
+.prow{display:grid;grid-template-columns:46px minmax(0,1fr) auto;gap:10px;align-items:center;min-height:40px}
+.prow.rec{background:var(--goodbg);border-radius:8px;padding:6px 10px;margin-top:6px;min-height:52px}
+.pbody{min-width:0}
+.pname{font-weight:600;line-height:1.3;overflow-wrap:anywhere}
+.pname.empty{color:var(--muted);font-weight:500}
+.name.struck{text-decoration:line-through;color:var(--muted);font-weight:500}
+.psub{color:var(--muted);font-size:.8rem;line-height:1.35}
+.ctx{display:none}
+.note{color:var(--muted);font-size:.78rem;line-height:1.3}
+.badge{display:inline-block;font-size:.68rem;font-weight:700;line-height:1.5;border-radius:4px;padding:0 5px;margin-left:4px;vertical-align:1px;background:var(--warnbg);color:var(--warn)}
+.badge.out{background:var(--badbg);color:var(--bad)}
+.badge.locked{background:var(--line);color:var(--text)}
+.pnums{text-align:right;white-space:nowrap;font-variant-numeric:tabular-nums;line-height:1.3}
+.pts{font-weight:700;font-size:1.05rem}
+.pts.dim{color:var(--muted);font-weight:500}
+.pts.strike{text-decoration:line-through}
+.range{font-size:.72rem;color:var(--muted)}
+.gainline{font-size:.8rem;font-weight:700;color:var(--good)}
+.extra{font-size:.78rem;line-height:1.3;color:var(--good)}
+.extra.muted-extra{color:var(--muted)}
+.aside{margin:8px 2px}
+/* Trades */
+.idea{display:block;width:100%;text-align:left;background:transparent;border:0;color:inherit;font:inherit;padding:2px 0;cursor:pointer}
+.idea:hover .name{text-decoration:underline}
+.idea:focus-visible{outline:2px solid var(--accent);outline-offset:2px;border-radius:6px}
+.teampick{font:inherit;font-size:.95rem;padding:8px 10px;border:1px solid var(--line);border-radius:8px;background:var(--card);color:var(--text);max-width:100%}
+.result .num.pos{color:var(--good)}
+.result .num.neg{color:var(--bad)}
+.idea .neg{color:var(--bad)}
+.plists{display:grid;gap:0 16px}
+.plist h3{font-size:.95rem;margin:14px 0 6px}
+.pick{display:grid;grid-template-columns:22px 46px minmax(0,1fr);gap:10px;align-items:center;padding:8px 0;border-top:1px solid var(--line);cursor:pointer}
+.pick:first-child{border-top:0}
+.pick input{width:18px;height:18px;margin:0;accent-color:var(--accent)}
+@media (min-width:1000px){.plists{grid-template-columns:1fr 1fr}}
+/* Standings */
+.tablecard{padding:4px 12px;overflow-x:auto}
+.standings{width:100%;border-collapse:collapse;font-size:.88rem;font-variant-numeric:tabular-nums}
+.standings th{font-size:.7rem;text-transform:uppercase;letter-spacing:.04em;color:var(--muted);font-weight:600;text-align:left;padding:8px 6px 6px}
+.standings td{padding:8px 6px;border-top:1px solid var(--line)}
+.standings .num{text-align:right;white-space:nowrap}
+.standings .seed{color:var(--muted);width:1.5rem}
+.standings .tname{overflow-wrap:break-word;word-break:normal;min-width:7rem}
+.standings .div{color:var(--muted);font-size:.72rem}
+.standings .strong{font-weight:700}
+.standings tr.mine td{background:var(--goodbg);font-weight:600}
+.standings tr.cutline+tr td{border-top:2px solid var(--accent)}
+@media (max-width:639px){.standings{font-size:.82rem}.standings td,.standings th{padding-left:4px;padding-right:4px}}
+.pts.good{color:var(--good)}
+.pts.bad{color:var(--bad)}
+.fold>summary{font-size:1.1rem;font-weight:700;margin:20px 0 8px;cursor:pointer}
+.fold>summary:focus-visible{outline:2px solid var(--accent);outline-offset:2px}
+
+/* Lineup or Waivers switch inside a league */
+.views{display:flex;gap:4px;margin:10px 0 0;padding:3px;border:1px solid var(--line);border-radius:10px;background:var(--bg);width:max-content}
+.view{border:1px solid transparent;background:transparent;color:var(--muted);border-radius:7px;padding:5px 12px;font:inherit;font-size:.85rem;cursor:pointer}
+.view[aria-pressed=true]{background:var(--card);border-color:var(--line);color:var(--text);font-weight:600;box-shadow:0 1px 2px rgba(0,0,0,.12)}
+.view:focus-visible{outline:2px solid var(--accent);outline-offset:1px}
+
+/* Slot chips: colored by slot. Bench chips are neutral */
+.chip{display:inline-flex;align-items:center;justify-content:center;width:46px;height:22px;border-radius:6px;font-size:.7rem;font-weight:700;letter-spacing:.02em;white-space:nowrap}
+.chip.neutral{border:1px solid var(--line);color:var(--muted)}
+.chip.pos-qb{background:var(--pos-qb-bg);color:var(--pos-qb-fg)}
+.chip.pos-rb{background:var(--pos-rb-bg);color:var(--pos-rb-fg)}
+.chip.pos-wr{background:var(--pos-wr-bg);color:var(--pos-wr-fg)}
+.chip.pos-te{background:var(--pos-te-bg);color:var(--pos-te-fg)}
+.chip.pos-flex{background:var(--pos-flex-bg);color:var(--pos-flex-fg)}
+.chip.pos-k{background:var(--pos-k-bg);color:var(--pos-k-fg)}
+.chip.pos-def{background:var(--pos-def-bg);color:var(--pos-def-fg)}
+
+/* Hover and selected states. Hover only where a pointer can hover, so a tap on a phone never leaves a stuck highlight.
+   Only things you can click get a hover. Colors come from the existing tokens, no animation. */
+@media (hover:hover){
+  .tab:not([aria-selected=true]):hover,.view:not([aria-pressed=true]):hover{background:var(--card)}
+  .pick:hover{background:var(--bg)}
+}
+.pick{margin:0 -8px;padding:8px;border-radius:6px}
+.pick:has(input:checked){background:var(--goodbg)}
+.pick:has(input:checked) .chip{box-shadow:0 0 0 2px var(--card)}   /* keeps the green RB chip apart from the green row */
+#builder{scroll-margin-top:16px}
+
+/* Layout: phones get one column. Wide screens get a sticky sidebar and a wider main column */
+.cols{display:flex;flex-direction:column}
+.colA,.colB{display:contents}
+.s-sum{order:1}.s-moves{order:2}.s-lineup{order:3}.s-bench{order:4}.s-src{order:6}
+@media (min-width:640px){.ctx{display:inline}}
+@media (min-width:1000px){
+  .top,main,.foot{max-width:1180px}
+  .tabs{max-width:1148px}
+  body{font-size:17px}
+  .cols{display:grid;grid-template-columns:340px minmax(0,1fr);gap:0 28px;align-items:start}
+  .colA{display:block;position:sticky;top:12px}
+  .colB{display:block}
+  .colB h2:first-child,.colA .s-sum+.s-moves h2{margin-top:0}
+  .s-lineup h2{margin-top:0}
+  .s-moves h2{margin-top:16px}
+  .s-bench h2,.s-src h2{margin-top:24px}
+  .summary{justify-content:space-between}
+}
+
+/* ---------------------------------------------------------------- S1 site shell
+   The league tabs and the view switch form one bar. Under 1000px the bar sticks to the top
+   so it stays in reach while the board scrolls. It has the page background, so content slides
+   under it cleanly. Wide screens keep the static layout, so the sidebar (sticky at top:12px) never
+   slides under the bar. #builder scroll margin is set from --bar-h, which app.js writes. */
+.bar{max-width:760px;margin:0 auto;padding:12px 16px 8px}
+@media (max-width:999px){
+  .bar{position:sticky;top:0;z-index:5;background:var(--bg)}
+  #builder{scroll-margin-top:calc(var(--bar-h,0px) + 16px)}
+}
+@media (min-width:1000px){.bar{max-width:1180px}}
+
+/* ---------------------------------------------------------------- S3 Waivers and Standings
+   Best pickups table, small gain rows, FAAB card, and the standings Bye column on small phones.
+   The Points column stays on phones. Under 640px the Stretch and Playoffs columns go. */
+.pickups{width:100%;border-collapse:collapse;font-size:.88rem;font-variant-numeric:tabular-nums}
+.pickups th{font-size:.7rem;text-transform:uppercase;letter-spacing:.04em;color:var(--muted);font-weight:600;text-align:right;padding:8px 4px 6px;line-height:1.2;vertical-align:bottom}
+.pickups td{padding:8px 4px;border-top:1px solid var(--line);text-align:right;white-space:nowrap;line-height:1.3}
+.pickups th:first-child,.pickups td.pk-name{text-align:left;padding-left:0}
+.pickups td.pk-name{white-space:normal;overflow-wrap:anywhere;font-weight:600}
+.pickups .pk-pos{display:inline-block;margin-left:6px;font-size:.72rem;font-weight:600;color:var(--muted)}
+.pickups td.small{color:var(--muted);font-weight:500}
+.pickups td.pk-bid{font-weight:700}
+@media (max-width:639px){.pickups .pk-wide{display:none}}
+.pickups .pk-name{min-width:6rem}
+
+/* Small gain: a waiver row under 1.0 points is muted, with a label under it */
+.slot.small .pname,.slot.small .pts,.slot.small .gainline{color:var(--muted)}
+.smallgain{font-size:.72rem;color:var(--muted);margin:2px 0 0 56px}
+.faabnote{margin-top:10px}
+
+/* Standings: the Bye column goes under 400px. Points stays. Long team names wrap instead of pushing the table sideways */
+@media (max-width:399px){.standings .bye{display:none}}
+.standings .tname{min-width:0;overflow-wrap:anywhere}
+
+/* S4 Trade */
+.posfilter{display:flex;flex-wrap:wrap;gap:6px;margin:10px 0 0}
+.posbtn{border:1px solid var(--line);background:var(--card);color:var(--text);border-radius:999px;padding:4px 12px;font:inherit;font-size:.85rem;cursor:pointer}
+.posbtn[aria-pressed=true]{background:var(--accent);border-color:var(--accent);color:var(--bg);font-weight:600}
+.posbtn:focus-visible{outline:2px solid var(--accent);outline-offset:2px}
+.pghead{font-size:.7rem;text-transform:uppercase;letter-spacing:.04em;color:var(--muted);font-weight:700;padding:10px 0 2px}
+.pghead+.pick{border-top:0}
+.tbar{position:fixed;left:0;right:0;bottom:0;z-index:6;display:flex;flex-wrap:wrap;justify-content:center;align-items:center;padding:10px 16px calc(10px + env(safe-area-inset-bottom));background:var(--card);border-top:1px solid var(--line);box-shadow:0 -2px 8px rgba(0,0,0,.12);font-size:.92rem;font-weight:600;font-variant-numeric:tabular-nums;text-align:center}
+.tbar[hidden]{display:none}
+.tbar .pos{color:var(--good)}
+.tbar .neg{color:var(--bad)}
+.tbar .sep{color:var(--muted);font-weight:400;margin:0 6px}
+@media (max-width:999px){#builder{padding-bottom:64px}}
+@media (min-width:1000px){.tbar{display:none}}
+
+/* S2 Lineup view */
+.matchup .mhead,.recap .mhead,.upside .mhead{font-weight:700;font-size:1.02rem;line-height:1.3;overflow-wrap:anywhere}
+.matchup .muted{margin-top:6px;line-height:1.35}
+.wp{font-size:1.5rem;font-weight:700;line-height:1.2;font-variant-numeric:tabular-nums}
+.wp.good{color:var(--good)}
+.wp.bad{color:var(--bad)}
+.recap .rline{margin-top:4px;font-variant-numeric:tabular-nums;line-height:1.35}
+.alert .line,.warn .line{font-weight:400;font-size:.9rem;margin-top:4px;line-height:1.35}
+.late{color:var(--bad);font-weight:700;font-size:.9rem;margin-top:4px;line-height:1.35}
+.close{margin:-2px 0 0 56px;padding-bottom:6px;font-size:.78rem;line-height:1.3;color:var(--muted)}
+.upside{border-color:var(--warn)}
+.upside .opt{padding:8px 0;border-top:1px solid var(--line);line-height:1.35;overflow-wrap:anywhere}
+.upside .opt .name{font-weight:600}
+.upside .muted.aside{margin-top:8px}
+.fold.outs>summary{font-size:.92rem;font-weight:600;color:var(--muted);margin:10px 0 6px}
+.prow[role=button]{cursor:pointer;border-radius:8px}
+.prow[role=button]:focus-visible{outline:2px solid var(--accent);outline-offset:2px}
+@media (hover:hover){.prow[role=button]:not(.rec):hover{background:var(--bg)}}
+.caret{display:inline-block;margin-left:6px}
+.caret::before{content:"\25BE";font-size:.75rem;font-weight:400;color:var(--muted)}
+.prow[aria-expanded=true] .caret{transform:rotate(180deg)}
+.pdetail{margin:2px 0 8px 56px;padding:4px 10px;border:1px solid var(--line);border-radius:8px;background:var(--bg);font-size:.82rem;line-height:1.35}
+.dline{padding:6px 0;border-top:1px solid var(--line)}
+.dline:first-child{border-top:0}
+.dline .label{display:block;margin-bottom:2px}
+.track{position:relative;width:84px;height:6px;margin:5px 0 0 auto;border-radius:3px;background:var(--line)}
+.track .fill{position:absolute;top:0;bottom:0;border-radius:3px;background:var(--accent);opacity:.5}
+.track .tick{position:absolute;top:-3px;bottom:-3px;width:3px;margin-left:-1px;border-radius:2px;background:var(--text)}
+.range.few{white-space:normal;max-width:96px;line-height:1.25;text-align:right}
+.s-recap{order:5}
+
+/* ---------------------------------------------------------------- S5 All leagues and tabs
+   The All tab comes first. A league tab shows its status in place of the gain: a red dot and Out, a green gain,
+   an amber count of questionable starters, or a muted check when set. The view bar holds the view switch and the
+   link to the league's app. The link sits at the right on wide screens and wraps under the switch on phones. */
+.tstat{display:inline-flex;align-items:center;gap:4px;font-size:.75rem;font-weight:700;line-height:1.2;white-space:nowrap;max-width:100%}
+.tstat.good{color:var(--good)}
+.tstat.warn{color:var(--warn)}
+.tstat.out{color:var(--bad)}
+.tstat.muted{color:var(--muted);font-weight:600}
+.tstat .dot{width:7px;height:7px;border-radius:50%;background:currentColor;flex:none}
+#viewbar{display:flex;flex-wrap:wrap;align-items:center;gap:4px 12px}
+#viewbar:empty{display:none}
+.applink{font-size:.85rem;font-weight:600;color:var(--accent);padding:5px 0;text-decoration:underline;text-underline-offset:2px}
+.applink:focus-visible{outline:2px solid var(--accent);outline-offset:2px;border-radius:4px}
+@media (min-width:640px){.applink{margin-left:auto}}
+.jump{border:0;background:transparent;color:var(--accent);font:inherit;font-weight:700;padding:0;cursor:pointer;text-align:left;text-decoration:underline;text-underline-offset:2px}
+.jump:focus-visible{outline:2px solid var(--accent);outline-offset:2px;border-radius:4px}
+.todo-league{padding:10px 0;border-top:1px solid var(--line)}
+.todo-league:first-child{border-top:0}
+.todo-set{color:var(--muted);font-size:.9rem}
+.fresh-name{display:block;font-weight:700;margin-bottom:2px}
+@media (min-width:1000px){.colA>.s-moves:first-child h2{margin-top:0}}
+
+/* Shotguns (house rule, ESPN league) */
+.sg-top{display:flex;justify-content:space-between;align-items:baseline;gap:12px}
+.sg-count{font-weight:700;font-variant-numeric:tabular-nums;white-space:nowrap;color:var(--bad)}
+.sg-team .psub{margin-top:2px}
+.sg-team.mine{background:var(--goodbg);margin:0 -12px;padding-left:12px;padding-right:12px}
+.sg-table td.tname{min-width:0}
+.sg-fold>summary{font-size:1rem;margin:12px 0 6px}
+/* Five view buttons fit a 360px phone */
+@media (max-width:420px){.views{width:100%;max-width:100%}.view{flex:1 1 auto;min-width:0;padding:5px 2px;font-size:.76rem}}
+/* League tab names break between words, not inside one, on small phones */
+@media (max-width:400px){.tab{font-size:.74rem;overflow-wrap:normal;word-break:normal;hyphens:auto;padding:6px 2px}}

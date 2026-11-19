@@ -1,0 +1,88 @@
+# skene-weekly-board
+
+Justin's start/sit board for one fantasy football league: Fantasizing 2026 on ESPN. His team is Exempt List (ESPN teamId 1). It runs on GitHub Actions and publishes a static page on GitHub Pages. The page shows your current lineup next to the best lineup, with the point difference, injury and bye flags, floor and ceiling, Vegas context and when each data source was last updated.
+
+The Waivers view has three lists. Short term ranks free agents by the projected points they add to your best possible lineup this week, so weak slots, byes and injuries are all covered by one number. Stretch run ranks them over the regular season weeks left after this one, where bye coverage shows up. Long term ranks them by the points they add across the fantasy playoff weeks still ahead (weeks 15 to 17 by default). A playoff week's rate is this week's projection for healthy players, and the season average for DEF, K and anyone hurt or on bye now. Teams off that week count 0. Playoff opponents are tagged soft or tough from points allowed to the position this season, as context only. Both lists cap at two per position. The view also shows the best three free agents at each position and suggests a drop from your bench. ESPN does not say who is on waivers, so some targets may need a claim.
+
+The Trade view does two things. Trade ideas lists 1 for 1 trades with each other team that make both teams' lineups better over the rest of the season (stretch run plus playoffs, every week counted the same), scored the same way as the waiver lists, so the offer is one the other side has a reason to accept. Build a trade lets you pick any partner and any players on both sides and shows the change for you and for them over the playoffs and this week. The builder runs the same lineup optimizer in the browser, and a test checks it against the Python one.
+
+The Standings view shows the league table with playoff and bye odds and your remaining games with a win chance for each. Odds come from playing out the rest of the regular season 10,000 times with a fixed seed. Each team's expected score is its own best lineup under the board's projections, with the league's typical week to week swing as the spread. Players whose game has started are never suggested.
+
+The league is public, so every run reads its rosters, settings, standings, schedule and past lineups directly, with no login. A good pull is saved to `data/espn/rosters.json`. If the league goes private again, do not add credentials. Write that file by hand, or with a sync, and the board reads it the same way.
+
+The league also has a Shotguns view for its house rule: any starter, kicker or D/ST who scores 0 or less owes a shotgun. It shows last week by team and player, a season table, and every earlier week. Counts are raw. Unpaid shotguns double after Monday night football, and the board does not track that. It is turned on with `shotguns: true` in `config/leagues.yaml` and computed in `pipeline/shotguns.py` from ESPN's own league-scored lineups.
+
+An All tab collects every pending move, injury watch and stale source, and lists players starting in more than one lineup. The league tab shows its status (Set, +gain, n Q, or Out). The Lineup view shows this week's matchup with win chance and the playoff odds swing, a backup for each questionable starter with a warning when the backup plays earlier, close calls, an underdog box with higher ceiling bench options (context only), last week's recap, and a tap-to-open detail row per player. The page refetches the build when you come back to the tab. See `docs/UX_PLAN.md` for the full list and the data contract.
+
+## How it works
+
+```
+Sleeper players, state, stats, projections (Rotowire) ---\
+ESPN leaguedefaults ----------------------------------------> pipeline.ingest --> data/raw/{season}/{week}/
+nflverse lines ---------------------------------------------/                            |
+ESPN public league ---> data/espn/rosters.json ----------------------------------------+--> pipeline.build --> data/build/*.json --> site
+```
+
+- Projection is the equal average of ESPN and Rotowire (Rotowire's projections come from Sleeper's public feed), each re-scored with the league's exact scoring. There is no weighting, calibration or Vegas multiplier because none of them beat the equal average out of sample. See `docs/BACKTEST.md`.
+- Floor and ceiling are one weekly standard deviation below and above the projection, from the player's own games this season.
+- If one source fails, the run still publishes and marks that source stale. An empty board is never published. Every source is `fresh`, `stale` or `missing`. See `docs/STATES.md` for this and the board's other state machines.
+- ESPN league data comes from the public league endpoint on every run (`pipeline/adapters/espn_league.py`, no login). A good pull is written to `data/espn/rosters.json`, so if a later pull fails the board keeps using that file. The page warns when it is more than 4 days old. If a file is saved broken, the board keeps publishing from the last good copy (cached under `data/raw/`) and says so on the page. With no good copy at all, the build refuses to publish and the last good site stays live.
+- No credentials, tokens or cookies exist anywhere in this repo. The repo is public, so keep it that way.
+
+## Run locally
+
+Needs Python 3.12.
+
+```bash
+pip install -r requirements.txt
+python -m pytest
+python -m pipeline.ingest
+python -m pipeline.build
+python scripts/make_site.py
+python -m http.server -d _site 8000
+```
+
+Then open http://localhost:8000. Live checks against the real endpoints: `python -m pytest -m live`.
+
+Tests that cover the Sleeper league code path (multi league builds, standings and FAAB style rules) run on a fixture copy of the old three league config in `tests/fixtures/three_league/`. The shipped config is one ESPN league, and `tests/test_espn_only.py` checks that config directly.
+
+Useful scripts:
+
+- `scripts/check_scoring.py` checks the scoring engine against ESPN's own totals and Rotowire's totals.
+- `scripts/backtest.py` rebuilds the projection backtest in `docs/BACKTEST.md`.
+- `scripts/record_fixtures.py` re-records the test fixtures when a source changes shape. Run it, read the diff, then fix the adapter.
+
+## Schedule
+
+Defined in `.github/workflows/refresh.yml`, all times America/Chicago: Tue 9:07pm, Thu 2:07pm, Fri 5:07pm, Sun 9:07am, 10:47am, 1:07pm and 5:47pm (Sunday night inactives), Mon 5:47pm (Monday night inactives). `pipeline/common.py` keeps the same table for the "Next refresh" line, and a test checks the two match. It also runs on the manual "Run workflow" button (works from GitHub mobile) and whenever `data/espn/**` changes. Scheduled runs only fire from the default branch.
+
+## Setup once
+
+1. Settings, Pages, Source: GitHub Actions.
+2. Settings, Actions, General, Workflow permissions: Read and write.
+3. Merge to `main`. Pages only deploys from the default branch.
+
+## Preseason checklist
+
+Scheduled workflows are disabled automatically after 60 days without repo activity, so the offseason turns them off.
+
+1. Re-enable workflows in August: Actions tab, select `refresh`, Enable workflow.
+2. Update the league ID, the season, the ESPN league's `playoffWeeks` and `espnTeamId` (your team's id in the league) in `config/leagues.yaml`. Scoring and lineups are pulled from ESPN. Check `config/leagues/fantasizing.overrides.yaml` still applies.
+3. Confirm the new ESPN league is viewable to the public (League Info, Basic Settings), then run the workflow once so `data/espn/rosters.json` is for the new league. If it is private, write that file by hand or with a sync. Do not add credentials.
+4. Re-run the backtest before any model change ships: `python scripts/backtest.py`. Part 1 scores this season so far, Part 3 fits on last season and scores this one. It prints a verdict line, and a model change ships only when it beats the equal average with the whole bootstrap range above zero. Pulls are cached under `data/raw/{season}/{week}/backtest_*.json` (gitignored, about 11 MB). Add `--refresh` to re-pull.
+5. Run `python -m pytest -m live`. A contract failure means a source changed shape.
+6. Trigger `refresh` by hand and check that the league shows on the page with current stamps.
+
+## Layout
+
+```
+pipeline/adapters/   one adapter per source, each with a contract test
+pipeline/            ingest, scoring, lineup optimizer, waiver targets, trades, playoff odds, build
+config/              league ID, your ESPN team id and per league overrides
+data/espn/           ESPN roster file, written by ingest from the public league (or by hand or a sync if the league goes private)
+data/raw/            cached raw pulls by season and week
+data/build/          what the site reads
+site/                plain HTML, CSS and JS
+tests/               contract, scoring, build, site and state machine tests, plus tests/fixtures/three_league
+docs/                SPEC (what to build), BACKTEST (why the model), STATES (every state machine), UX_PLAN
+```
