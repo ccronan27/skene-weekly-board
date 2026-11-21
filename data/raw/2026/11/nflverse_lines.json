@@ -55,9 +55,9 @@
    "gametime": "13:00",
    "home": "DAL",
    "homeSpread": 8.5,
-   "impliedAway": 23.5,
-   "impliedHome": 32.0,
-   "total": 55.5,
+   "impliedAway": 23.0,
+   "impliedHome": 31.5,
+   "total": 54.5,
    "week": 11
   },
   {
@@ -66,9 +66,9 @@
    "gameday": "2026-11-22",
    "gametime": "13:00",
    "home": "DET",
-   "homeSpread": 6.0,
-   "impliedAway": 19.75,
-   "impliedHome": 25.75,
+   "homeSpread": 5.5,
+   "impliedAway": 20.0,
+   "impliedHome": 25.5,
    "total": 45.5,
    "week": 11
   },
@@ -78,9 +78,9 @@
    "gameday": "2026-11-22",
    "gametime": "13:00",
    "home": "KC",
-   "homeSpread": 15.5,
-   "impliedAway": 12.5,
-   "impliedHome": 28.0,
+   "homeSpread": 16.5,
+   "impliedAway": 12.0,
+   "impliedHome": 28.5,
    "total": 40.5,
    "week": 11
   },
@@ -114,9 +114,9 @@
    "gameday": "2026-11-22",
    "gametime": "16:25",
    "home": "DEN",
-   "homeSpread": 10.0,
-   "impliedAway": 15.25,
-   "impliedHome": 25.25,
+   "homeSpread": 10.5,
+   "impliedAway": 15.0,
+   "impliedHome": 25.5,
    "total": 40.5,
    "week": 11
   },
@@ -126,9 +126,9 @@
    "gameday": "2026-11-22",
    "gametime": "16:25",
    "home": "PHI",
-   "homeSpread": -4.5,
-   "impliedAway": 21.0,
-   "impliedHome": 16.5,
+   "homeSpread": -3.5,
+   "impliedAway": 20.5,
+   "impliedHome": 17.0,
    "total": 37.5,
    "week": 11
   },
@@ -157,6 +157,6 @@
    "week": 11
   }
  ],
- "fetchedAt": "2026-11-19T22:35:24Z",
+ "fetchedAt": "2026-11-21T03:54:11Z",
  "source": "nflverse_lines"
 }
